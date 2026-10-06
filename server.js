@@ -47,7 +47,9 @@ function accountSummaries() {
     firstLoadedAt: account.firstLoadedAt || null,
     lastCheckedAt: account.lastCheckedAt || null,
     lastAddedCount: account.lastAddedCount || 0,
-    lastError: account.lastError || null
+    lastError: account.lastError
+      ? account.lastError.replace(/TikTok returned repost API status 10222\./g, 'TikTok says this account is private (status 10222).')
+      : null
   })).sort((a, b) => a.handle.localeCompare(b.handle));
 }
 
@@ -116,6 +118,13 @@ function extractProfileData(documentData) {
     secUid: String(user.secUid || ''),
     userId: String(user.id || '')
   };
+}
+
+function repostApiStatusMessage(statusCode) {
+  if (statusCode === 10222) {
+    return 'TikTok says this account is private (status 10222).';
+  }
+  return `TikTok returned repost API status ${statusCode}.`;
 }
 
 async function scrapeOne(browser, handle, { knownIds = [], resumeUntilId = null, resumeCursor = null, onProgress = () => {} } = {}) {
@@ -286,7 +295,7 @@ async function scrapeOne(browser, handle, { knownIds = [], resumeUntilId = null,
     }
     await ingestQueue;
     if (statusCode !== 0) {
-      paginationError = `TikTok returned repost API status ${statusCode}.`;
+      paginationError = repostApiStatusMessage(statusCode);
     }
 
     // TikTok serves newest-first pages. Reuse the profile's natural scroll
@@ -310,7 +319,7 @@ async function scrapeOne(browser, handle, { knownIds = [], resumeUntilId = null,
         ingest(payload);
         await ingestQueue;
         if (statusCode !== 0) {
-          paginationError = `TikTok returned repost API status ${statusCode}.`;
+          paginationError = repostApiStatusMessage(statusCode);
           break;
         }
         if (nextCursor === null) {
@@ -352,7 +361,7 @@ async function scrapeOne(browser, handle, { knownIds = [], resumeUntilId = null,
       }
       await ingestQueue;
       if (statusCode !== 0) {
-        paginationError = `TikTok returned repost API status ${statusCode}.`;
+        paginationError = repostApiStatusMessage(statusCode);
         break;
       }
       if (stopAtKnown()) break;
