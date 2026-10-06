@@ -11,6 +11,27 @@ npm start
 
 Open [http://localhost:3004](http://localhost:3004). On its first run, CloakBrowser downloads its Chromium binary (about 200 MB) into its local cache. Use **Manage repost library** to load accounts. Their reposts are stored in `data/repost-library.json` on the server. The first import scans the full Reposts tab; later updates stop when they reach a repost already saved.
 
+## Run with Docker
+
+Docker Compose builds the app and its Chromium dependencies, starts it on port 3004, and restarts it after host or container restarts. The account archive remains in the host's `./data` directory, so the existing `data/repost-library.json` is used when deploying this checkout.
+
+```sh
+docker compose up -d --build
+docker compose ps
+```
+
+By default, Compose publishes the app only on `127.0.0.1:3004`. Point a reverse proxy running on the same host at `http://127.0.0.1:3004`; terminate HTTPS at the proxy and forward the original `Host` and `X-Forwarded-Proto` headers. Use a dedicated hostname routed to `/` because the app uses root-relative URLs and is not mounted under a URL prefix. To choose a different host port or bind address, set `WHO_LIKED_PORT` or `WHO_LIKED_BIND` in the Compose environment. Set the bind address to `0.0.0.0` only when another machine must reach the app directly.
+
+For a reverse proxy running in Docker, create or use its shared Docker network, then start the app with the proxy network overlay:
+
+```sh
+PROXY_NETWORK=reverse-proxy docker compose -f compose.yaml -f compose.proxy.yaml up -d --build
+```
+
+The proxy network must already exist. Configure its upstream as `http://who-liked:3004`. The service also keeps the loopback host port available for local health checks. Docker's health check uses `/api/health`; the same endpoint reports archive storage status. The Dockerfile downloads CloakBrowser's Chromium during the image build, so the first sync does not need to download it at runtime.
+
+The container runs as UID 1000 and writes to the bind-mounted `./data` directory. Make sure that directory is writable by UID 1000 on the deployment host.
+
 The library page shows the current account, page count, videos found and saved, elapsed time, and any TikTok errors. It can update selected accounts or all accounts. Partial imports are saved with their next-page cursor after each page, so a retry can continue there. Older partial imports without a saved cursor are deduplicated while the scan advances through their previously saved history. The main game reads only the local library and never waits for a TikTok scan.
 
 You can inspect the server at `/api/health`, saved account counts at `/api/accounts`, and live scan details at `/api/sync/status`.

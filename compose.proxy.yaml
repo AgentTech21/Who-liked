@@ -1,0 +1,11 @@
+services:
+  who-liked:
+    networks:
+      reverse-proxy:
+        aliases:
+          - who-liked
+
+networks:
+  reverse-proxy:
+    name: ${PROXY_NETWORK:-reverse-proxy}
+    external: true

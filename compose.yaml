@@ -1,0 +1,14 @@
+services:
+  who-liked:
+    build: .
+    restart: unless-stopped
+    init: true
+    shm_size: 1gb
+    environment:
+      NODE_ENV: production
+      PORT: "3004"
+      CLOAKBROWSER_CACHE_DIR: /opt/cloakbrowser
+    volumes:
+      - ./data:/app/data
+    ports:
+      - "${WHO_LIKED_BIND:-127.0.0.1}:${WHO_LIKED_PORT:-3004}:3004"

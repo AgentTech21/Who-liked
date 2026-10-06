@@ -379,7 +379,7 @@ async function scrapeOne(browser, handle, { knownIds = [], resumeUntilId = null,
           : statusCode && statusCode !== 0
             ? `TikTok rejected the repost request (code ${statusCode}).`
             : null;
-      return { handle, reposts: [], complete: !error && !hasMore, foundKnown, nextCursor, error };
+      return { handle, reposts: [], complete: !error && (!hasMore || stopAtKnown()), foundKnown, nextCursor, error };
     }
     return { handle, reposts: [...reposts.values()], complete: !hasMore || stopAtKnown(), foundKnown, nextCursor, error: null };
   } finally {
