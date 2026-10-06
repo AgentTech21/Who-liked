@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101010">
+  <title>who_liked — TikTok repost guessing game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+  <main class="shell">
+    <header class="topbar">
+      <a class="wordmark" href="/" aria-label="who liked home"><span class="logo-dot"></span>who_liked</a>
+      <div class="top-note"><span class="live-dot"></span> A GROUP CHAT, IN REAL LIFE</div>
+    </header>
+
+    <section class="intro" id="intro">
+      <div class="eyebrow"><span>THE REPOST GUESSING GAME</span><span class="eyebrow-line"></span><span>01 / 02</span></div>
+      <h1>Whose <span>repost</span><br>was that?</h1>
+      <p class="lede">Choose your crew from the local repost library. Videos are picked from saved reposts, so game night starts right away.</p>
+
+      <form id="setup-form" class="setup-card">
+        <div class="field-heading">
+          <span>THE GROUP</span>
+          <span id="handle-count">0 players</span>
+        </div>
+        <div id="library-choices" class="library-choices"><p class="library-empty">Loading local accounts…</p></div>
+        <div class="field-foot"><span>Pick 2–12 loaded accounts</span><a href="/library.html">Manage repost library ↗</a></div>
+        <button id="start-button" type="submit" class="primary-button">
+          <span>Start the game</span><span class="button-arrow">↗</span>
+        </button>
+        <p id="setup-error" class="error-message" role="alert" hidden></p>
+      </form>
+      <div class="privacy-note"><span class="sparkle">✳</span> Reposts are stored locally on this server. Update accounts from the repost library page.</div>
+    </section>
+
+    <section class="game hidden" id="game" aria-live="polite">
+      <div class="game-topline">
+        <button class="text-button" id="back-button">← Edit group</button>
+        <div class="round-count" id="round-count">ROUND 01</div>
+        <button class="text-button" id="reset-scores">Reset scores</button>
+      </div>
+      <div class="game-layout">
+        <div class="round-copy">
+          <div class="eyebrow"><span>THE GROUP GUESS</span><span class="eyebrow-line"></span><span id="pool-count">PLAYERS IN POOL</span></div>
+          <h2>Who <span>liked</span><br>this one?</h2>
+          <p class="round-hint" id="round-hint">Make your pick before the reveal.</p>
+          <div class="choices" id="choices"></div>
+          <div class="answer hidden" id="answer"></div>
+          <button class="primary-button next-button hidden" id="next-button"><span>Next video</span><span class="button-arrow">↗</span></button>
+          <div class="scoreboard-wrap">
+            <div class="scoreboard-heading"><span>THE SCOREBOARD</span><span>POINTS</span></div>
+            <div id="scoreboard" class="scoreboard"></div>
+          </div>
+        </div>
+        <div class="video-column">
+          <div class="video-frame" id="video-frame">
+            <div class="video-loading"><span class="spinner"></span><span>Picking a repost…</span></div>
+          </div>
+          <div class="video-caption"><span class="video-label"><span class="live-dot"></span> MYSTERY REPOST</span><a id="open-tiktok" href="#" target="_blank" rel="noreferrer">Open on TikTok ↗</a></div>
+        </div>
+      </div>
+    </section>
+    <footer><span>who_liked</span><span>PASS THE PHONE. PLACE YOUR BET.</span></footer>
+  </main>
+  <script src="/app.js" defer></script>
+</body>
+</html>

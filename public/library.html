@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101010">
+  <title>Repost library — who_liked</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+  <main class="shell library-shell">
+    <header class="topbar">
+      <a class="wordmark" href="/" aria-label="who liked home"><span class="logo-dot"></span>who_liked</a>
+      <a class="text-button library-home-link" href="/">← Back to game</a>
+    </header>
+
+    <section class="library-page">
+      <div class="eyebrow"><span>LOCAL REPOST ARCHIVE</span><span class="eyebrow-line"></span><span>SETUP</span></div>
+      <h1>Build your<br><span>library.</span></h1>
+      <p class="lede">The first import walks each Reposts tab and saves its history on this server. Future updates stop when they reach videos already saved.</p>
+
+      <form id="add-form" class="setup-card">
+        <div class="field-heading"><label for="new-handles">LOAD ACCOUNTS</label><span>Up to 12 at a time</span></div>
+        <textarea id="new-handles" rows="3" placeholder="@alex&#10;@sam" spellcheck="false" required></textarea>
+        <div class="field-foot"><span>One username per line</span><span>First import can take a while</span></div>
+        <button id="add-button" type="submit" class="primary-button"><span>Load full repost history</span><span class="button-arrow">↗</span></button>
+        <p id="library-error" class="error-message" role="alert" hidden></p>
+      </form>
+
+      <section class="library-section" aria-labelledby="saved-heading">
+        <div class="library-section-heading">
+          <div><div class="field-heading"><span id="saved-heading">SAVED ACCOUNTS</span><span id="account-count">Loading…</span></div><p class="library-subtitle">Updating checks only for reposts newer than the local history.</p></div>
+          <button id="refresh-all" class="secondary-button" type="button">Update all</button>
+        </div>
+        <div id="account-list" class="account-list"><p class="library-empty">Reading local library…</p></div>
+        <button id="update-selected" class="primary-button" type="button"><span>Update selected accounts</span><span class="button-arrow">↗</span></button>
+      </section>
+
+      <section id="sync-panel" class="sync-panel" aria-live="polite">
+        <div class="field-heading"><span>SYNC PROGRESS</span><span id="sync-status">Idle</span></div>
+        <p id="sync-summary" class="sync-summary">No repost scan is running.</p>
+        <div class="sync-current" id="sync-current"></div>
+        <div id="sync-account-progress" class="sync-account-progress"></div>
+      </section>
+
+      <section class="endpoint-panel">
+        <div class="field-heading"><span>CHECKABLE STATUS ENDPOINTS</span><span>JSON</span></div>
+        <p>Open these in another tab to inspect storage, saved accounts, or live scan progress.</p>
+        <div class="endpoint-links">
+          <a href="/api/health" target="_blank" rel="noreferrer">/api/health</a>
+          <a href="/api/accounts" target="_blank" rel="noreferrer">/api/accounts</a>
+          <a href="/api/sync/status" target="_blank" rel="noreferrer">/api/sync/status</a>
+        </div>
+        <p class="storage-location">Saved locally at <code>data/repost-library.json</code> on the server.</p>
+      </section>
+    </section>
+
+    <footer><span>who_liked</span><span>ONE SLOW IMPORT. QUICKER GAME NIGHTS.</span></footer>
+  </main>
+  <script src="/library.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "who-liked",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A party game for guessing who reposted a TikTok video.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "cloakbrowser": "^0.3.32",
+    "playwright": "^1.63.0"
+  }
+}
